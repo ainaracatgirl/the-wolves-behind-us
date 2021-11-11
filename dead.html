@@ -1,0 +1,31 @@
+<html>
+<head>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: sans-serif;
+      flex-direction: column;
+    }
+  </style>
+  <title>You died. Wait.</title>
+</head>
+  <body>
+    <h1>Has muerto. Puedes volver a jugar cuando el temporizador llegue a cero.</h1>
+    <br><br>
+    <h2>120s</h2>
+    
+    <script>
+      const e = document.querySelector('h2');
+      let time = 120;
+      setInterval(() => {
+        time--;
+        e.textContent = time.toFixed(0) + "s";
+        if (time == 0) {
+          location.href = "/";
+        }
+      }, 1000);
+    </script>
+  </body>
+</html>
