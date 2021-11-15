@@ -7,12 +7,14 @@
       align-items: center;
       font-family: sans-serif;
       flex-direction: column;
+      background: #333;
+      color: #fff;
     }
   </style>
-  <title>You died. Wait.</title>
+  <title>The Wolves Behind Us</title>
 </head>
   <body>
-    <h1>Has muerto. Puedes volver a jugar cuando el temporizador llegue a cero.</h1>
+    <h1>¡Te han eliminado! Cuando se acabe la ronda podrás volver a jugar.</h1>
     <br><br>
     <h2>60s</h2>
     
@@ -20,12 +22,12 @@
       const e = document.querySelector('h2');
       let time = 60;
       setInterval(() => {
-        time--;
-        e.textContent = time.toFixed(0) + "s";
+        time -= .01;
+        e.textContent = time.toFixed(2) + "s";
         if (time == 0) {
           location.href = "/";
         }
-      }, 1000);
+      }, 10);
     </script>
   </body>
 </html>
