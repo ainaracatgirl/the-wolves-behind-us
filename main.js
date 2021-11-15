@@ -256,6 +256,13 @@ window.addEventListener('keydown', (ev) => {
 	  conn.event("wolfwarestudios:twbu/kill", { dead: nearplayer });
 	}
 	
+	if (cam.x+128 < 0 || cam.x+128 > 880) {
+	  cam.x = ox;
+	}
+	if (cam.y+72-8 < 0 || cam.y+72-8 > 496) {
+	  cam.y = oy;
+	}
+	
 	if (collcheck(cam.x + 128, cam.y + 72 - 8)) {
 		cam.x = ox;
 		cam.y = oy;
