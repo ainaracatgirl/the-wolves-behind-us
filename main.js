@@ -171,7 +171,7 @@ function animate() {
 		const player = players[puid];
 		if (!(puid in playersl)) playersl[puid] = [0,0];
 		
-		const smooth = 4;
+		const smooth = 6;
 		
 		playersl[puid][0] *= smooth-1;
 		playersl[puid][1] *= smooth-1;
