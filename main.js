@@ -170,10 +170,15 @@ function animate() {
 	for (const puid of Object.keys(players)) {	  
 		const player = players[puid];
 		if (!(puid in playersl)) playersl[puid] = [0,0];
+		
+		const smooth = 4;
+		
+		playersl[puid][0] *= smooth-1;
+		playersl[puid][1] *= smooth-1;
 		playersl[puid][0] += player.x;
 		playersl[puid][1] += player.y;
-		playersl[puid][0] /= 2;
-		playersl[puid][1] /= 2;
+		playersl[puid][0] /= smooth;
+		playersl[puid][1] /= smooth;
 		if (Date.now() - player.time > 5000) {
 			playersToRemove.push(puid);
 			continue;
