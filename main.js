@@ -43,6 +43,7 @@ let nearplayer = null;
 let votesplay = {};
 let roles = {};
 let players = {};
+let playersl = {};
 let uid = getuid();
 
 const conn = BroadcastWS(uid, [ "wolfwarestudios:twbu/position", "wolfwarestudios:twbu/kill", "wolfwarestudios:twbu/getroles", "wolfwarestudios:twbu/role", "wolfwarestudios:twbu/votetime", "wolfwarestudios:twbu/vote" ]);
@@ -166,13 +167,18 @@ function animate() {
 	const playersToRemove = [];
 	nearplayer = null;
 	let neardst = 5 * 8;
-	for (const puid of Object.keys(players)) {
+	for (const puid of Object.keys(players)) {	  
 		const player = players[puid];
+		if (!(puid in playersl)) playersl[puid] = [0,0];
+		playersl[puid][0] += player.x;
+		playersl[puid][1] += player.y;
+		playersl[puid][0] /= 2;
+		playersl[puid][1] /= 2;
 		if (Date.now() - player.time > 5000) {
 			playersToRemove.push(puid);
 			continue;
 		}
-		dlib.blit(`assets/player/${player.dir}_0`, player.x+128, player.y + 72-8);
+		dlib.blit(`assets/player/${player.dir}_0`, playersl[puid][0]+128, playersl[puid][1] + 72-8);
 		const dst = Math.sqrt((player.x - cam.x) ** 2, (player.y - cam.y) ** 2);
 		if (dst < neardst) {
 		  nearplayer = puid;
