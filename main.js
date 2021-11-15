@@ -56,6 +56,7 @@ conn.addEventListener('message', (ev) => {
 		if (role != undefined)
 			conn.event('wolfwarestudios:twbu/role', { role: role });
 	} else if (packet.event == 'wolfwarestudios:twbu/kill') {
+	  console.log(packet.dead, uid);
 		if (packet.dead == uid && !voting) {
 			conn.close();
 			location.href = "/dead.html";
