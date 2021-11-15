@@ -139,7 +139,8 @@ setInterval(() => {
         tokill = puid;
       }
     }
-    conn.event("wolfwarestudios:twbu/kill", { dead: tokill });
+    if (tokill != null)
+      conn.event("wolfwarestudios:twbu/kill", { dead: tokill });
   }
   if (votetime <= 0) {
     conn.event("wolfwarestudios:twbu/votetime");

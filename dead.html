@@ -14,11 +14,11 @@
   <body>
     <h1>Has muerto. Puedes volver a jugar cuando el temporizador llegue a cero.</h1>
     <br><br>
-    <h2>120s</h2>
+    <h2>60s</h2>
     
     <script>
       const e = document.querySelector('h2');
-      let time = 120;
+      let time = 60;
       setInterval(() => {
         time--;
         e.textContent = time.toFixed(0) + "s";
