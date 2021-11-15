@@ -40,7 +40,7 @@ let votetime = 60;
 let voting = false;
 let voteproc = false;
 let nearplayer = null;
-const votesplay = {};
+let votesplay = {};
 const roles = {};
 const players = {};
 const uid = getuid();
@@ -138,7 +138,7 @@ setInterval(() => {
         tokill = puid;
       }
     }
-    conn.event("wolfwarestudios:twbu/kill", { dead: puid });
+    conn.event("wolfwarestudios:twbu/kill", { dead: tokill });
   }
   if (votetime <= 0) {
     conn.event("wolfwarestudios:twbu/votetime");
