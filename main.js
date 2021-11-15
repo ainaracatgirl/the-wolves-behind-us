@@ -119,6 +119,10 @@ let animd = 'left';
 let statem = 'play';
 
 const cam = { x: 0, y: 0, _: false };
+const starters = [[32,240],[128,240],[208,288],[32,336],[128,384],[224,416],[368,416],[528,384],[528,288],[368,256]];
+const start = starters[Math.floor(Math.random()*starters.length)];
+cam.x = start[0];
+cam.y = start[1];
 
 function sendpos() {
 	conn.event("wolfwarestudios:twbu/position", { uid, x: cam.x, y: cam.y, dir: animd });

@@ -14,7 +14,7 @@
   <title>The Wolves Behind Us</title>
 </head>
   <body>
-    <h1>¡Te han eliminado! Cuando se acabe la ronda podrás volver a jugar.</h1>
+    <h1>Te han eliminado. Espera a que acabe la ronda actual.</h1>
     <br><br>
     <h2>60s</h2>
     
@@ -24,7 +24,7 @@
       setInterval(() => {
         time -= .01;
         e.textContent = time.toFixed(2) + "s";
-        if (time == 0) {
+        if (time <= 0) {
           location.href = "/";
         }
       }, 10);
