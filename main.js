@@ -41,9 +41,9 @@ let voting = false;
 let voteproc = false;
 let nearplayer = null;
 let votesplay = {};
-const roles = {};
-const players = {};
-const uid = getuid();
+let roles = {};
+let players = {};
+let uid = getuid();
 
 const conn = BroadcastWS(uid, [ "wolfwarestudios:twbu/position", "wolfwarestudios:twbu/kill", "wolfwarestudios:twbu/getroles", "wolfwarestudios:twbu/role", "wolfwarestudios:twbu/votetime", "wolfwarestudios:twbu/vote" ]);
 conn.addEventListener('message', (ev) => {
