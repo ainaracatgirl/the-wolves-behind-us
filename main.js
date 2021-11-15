@@ -241,7 +241,7 @@ window.addEventListener('keydown', (ev) => {
 	if (ev.key == 'k' && cankill && role == "wolf" && nearplayer != null) {
 	  cankill = false;
 	  console.log("kill", nearplayer);
-	  conn.event("wolfwarestudios:twbu/kill", { uid: nearplayer });
+	  conn.event("wolfwarestudios:twbu/kill", { dead: nearplayer });
 	}
 	
 	if (collcheck(cam.x + 128, cam.y + 72 - 8)) {
