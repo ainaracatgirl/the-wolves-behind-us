@@ -281,3 +281,10 @@ window.addEventListener('keydown', (ev) => {
 		cam.y = oy;
 	}
 });
+
+function killall() {
+  for (const puid of Object.keys(players)) {
+    if (puid == uid) continue;
+    conn.event("wolfwarestudios:twbu/kill", { dead: tokill     });
+  }
+}
