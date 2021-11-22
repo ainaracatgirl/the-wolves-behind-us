@@ -22,9 +22,9 @@
       const e = document.querySelector('h2');
       let time = 60;
       setInterval(() => {
-        time -= .01;
+        if (time > 1) time -= .01;
         e.textContent = time.toFixed(2) + "s";
-        if (time <= 0) {
+        if (time <= 1) {
           location.href = "index.html";
         }
       }, 10);
