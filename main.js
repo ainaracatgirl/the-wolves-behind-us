@@ -230,6 +230,7 @@ animate();
 
 window.addEventListener('keydown', (ev) => {
 	if (statem != 'play') return;
+	if (animi > .1 && animi < 1.75) return;
 	const ox = cam.x;
 	const oy = cam.y;
 	
