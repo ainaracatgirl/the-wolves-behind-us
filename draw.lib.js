@@ -35,7 +35,7 @@ class DrawLib {
 
     blitc(spr, x, y, col) {
       this.ctx.drawImage(this.sprites[spr], x - this.cx, y - this.cy);
-      this.ctx.globalCompositeOperation = "source-atop";
+      this.ctx.globalCompositeOperation = "hue";
       this.ctx.fillStyle = col;
       this.ctx.fillRect(x - this.cx, y - this.cy, this.sprites[spr].width, this.sprites[spr].height);
       this.ctx.globalCompositeOperation = "source-over";
