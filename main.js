@@ -60,7 +60,7 @@ conn.addEventListener('message', (ev) => {
 	  console.log(packet.dead, uid);
 		if (packet.dead == uid && !voting) {
 			conn.close();
-			location.href = "/dead.html";
+			location.href = "dead.html";
 		}
 	} else if (packet.event == "wolfwarestudios:twbu/votetime") {
   	  console.log("vote time started (evt)");
