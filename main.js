@@ -194,7 +194,7 @@ function animate() {
 			continue;
 		}
 
-		dlib.blit(`assets/player/${player.dir}_0`, playersl[puid][0]+128, playersl[puid][1] + 72-8, players[puid].col);
+		dlib.blitc(`assets/player/${player.dir}_0`, playersl[puid][0]+128, playersl[puid][1] + 72-8, players[puid].col);
 
 		const dst = Math.sqrt((player.x - cam.x) ** 2, (player.y - cam.y) ** 2);
 		if (dst < neardst) {
