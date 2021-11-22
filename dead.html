@@ -22,11 +22,11 @@
       const e = document.querySelector('h2');
       let time = 60;
       setInterval(() => {
-        if (time > 1) time -= .01;
+        if (time > .1) time -= .01;
         e.textContent = time.toFixed(2) + "s";
-        if (time <= 1) {
+        if (time <= .1) {
           document.querySelector("h1").textContent = "Cargando...";
-          location.href = "./index.html";
+          location.href = "/the-wolves-behind-us/";
         }
       }, 10);
     </script>

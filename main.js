@@ -59,8 +59,8 @@ conn.addEventListener('message', (ev) => {
 	} else if (packet.event == 'wolfwarestudios:twbu/kill') {
 	  console.log(packet.dead, uid);
 		if (packet.dead == uid && !voting) {
-			conn.close();
-			location.href = "./dead.html";
+			try { conn.close(); } catch(e) {}
+			location.href = "/the-wolves-behind-us/dead.html";
 		}
 	} else if (packet.event == "wolfwarestudios:twbu/votetime") {
   	  console.log("vote time started (evt)");
