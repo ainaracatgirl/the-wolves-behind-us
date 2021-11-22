@@ -44,13 +44,14 @@ let votesplay = {};
 let roles = {};
 let players = {};
 let playersl = {};
+let col = Math.random();
 let uid = getuid();
 
 const conn = BroadcastWS(uid, [ "wolfwarestudios:twbu/position", "wolfwarestudios:twbu/kill", "wolfwarestudios:twbu/getroles", "wolfwarestudios:twbu/role", "wolfwarestudios:twbu/votetime", "wolfwarestudios:twbu/vote" ]);
 conn.addEventListener('message', (ev) => {
 	const packet = JSON.parse(ev.data);
    if (packet.event == 'wolfwarestudios:twbu/position') {
-		players[packet.uid] = { x: packet.x, y: packet.y, dir: packet.dir, time: Date.now() };
+		players[packet.uid] = { x: packet.x, y: packet.y, dir: packet.dir, time: Date.now(), col: packet.col };
 	} else if (packet.event == 'wolfwarestudios:twbu/role') {
 	  console.log(packet.uid, packet.role);
 		roles[packet.uid] = packet.role;
@@ -90,7 +91,10 @@ setTimeout(() => {
 	}
 	if (wolves < 2) {
 		role = 'wolf';
-	} else { role = 'normal'; }
+	} else {
+	  role = 'normal';
+	  if (Math.random() < .1) role = 'wolf';
+	}
 	roles[uid] = role;
 	document.getElementById('l').textContent = `Role: ${role}`;
 	conn.event('wolfwarestudios:twbu/role', { role, uid });
@@ -127,7 +131,7 @@ cam.x = start[0];
 cam.y = start[1];
 
 function sendpos() {
-	conn.event("wolfwarestudios:twbu/position", { uid, x: cam.x, y: cam.y, dir: animd });
+	conn.event("wolfwarestudios:twbu/position", { uid, x: cam.x, y: cam.y, dir: animd, col });
 }
 
 setInterval(() => {
@@ -168,7 +172,9 @@ function animate() {
 	dlib.background("background");
 	//dlib.background("collision");
 
+    dlib.ctx.filter = `hue-rotate(${Math.floor(col*360)}deg)`;
 	dlib.blit(`assets/player/${animd}_${parseInt(animi)}`, dlib.cx+128, dlib.cy+72-8);
+	dlib.ctx.filter = ``;
 
 	const playersToRemove = [];
 	nearplayer = null;
@@ -189,7 +195,9 @@ function animate() {
 			playersToRemove.push(puid);
 			continue;
 		}
+		dlib.ctx.filter = `hue-rotate(${Math.floor(players[puid].col*360)}deg)`;
 		dlib.blit(`assets/player/${player.dir}_0`, playersl[puid][0]+128, playersl[puid][1] + 72-8);
+		dlib.ctx.filter = ``;
 		const dst = Math.sqrt((player.x - cam.x) ** 2, (player.y - cam.y) ** 2);
 		if (dst < neardst) {
 		  nearplayer = puid;
@@ -251,12 +259,12 @@ window.addEventListener('keydown', (ev) => {
 		animp = true;
 		animd = 'front';
 	}
-	if (ev.key == 'v' 	&& voting && role != "wolf" && nearplayer != null) {
+	if (ev.key == 'v' 	&& voting && role != "wolf" && nearplayer != null && nearplayer != uid) {
 	  voting = false;
 	  console.log("vote", nearplayer);
 	  conn.event("wolfwarestudios:twbu/vote", { uid: nearplayer });
 	}
-	if (ev.key == 'k' && cankill && role == "wolf" && nearplayer != null) {
+	if (ev.key == 'k' && cankill && role == "wolf" && nearplayer != null && nearplayer != uid) {
 	  cankill = false;
 	  console.log("kill", nearplayer);
 	  conn.event("wolfwarestudios:twbu/kill", { dead: nearplayer });
