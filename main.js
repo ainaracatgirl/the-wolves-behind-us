@@ -52,10 +52,11 @@ conn.addEventListener('message', (ev) => {
    if (packet.event == 'wolfwarestudios:twbu/position') {
 		players[packet.uid] = { x: packet.x, y: packet.y, dir: packet.dir, time: Date.now() };
 	} else if (packet.event == 'wolfwarestudios:twbu/role') {
+	  console.log(packet.uid, packet.role);
 		roles[packet.uid] = packet.role;
 	} else if (packet.event == 'wolfwarestudios:twbu/getroles') {
 		if (role != undefined)
-			conn.event('wolfwarestudios:twbu/role', { role: role });
+			conn.event('wolfwarestudios:twbu/role', { role, uid });
 	} else if (packet.event == 'wolfwarestudios:twbu/kill') {
 	  console.log(packet.dead, uid);
 		if (packet.dead == uid && !voting) {
@@ -92,7 +93,7 @@ setTimeout(() => {
 	} else { role = 'normal'; }
 	roles[uid] = role;
 	document.getElementById('l').textContent = `Role: ${role}`;
-	conn.event('wolfwarestudios:twbu/role', { role });
+	conn.event('wolfwarestudios:twbu/role', { role, uid });
 }, 1000);
 
 const anims = [
