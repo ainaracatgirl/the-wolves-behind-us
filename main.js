@@ -44,7 +44,7 @@ let votesplay = {};
 let roles = {};
 let players = {};
 let playersl = {};
-let col = Math.random();
+let col = '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
 let uid = getuid();
 
 const conn = BroadcastWS(uid, [ "wolfwarestudios:twbu/position", "wolfwarestudios:twbu/kill", "wolfwarestudios:twbu/getroles", "wolfwarestudios:twbu/role", "wolfwarestudios:twbu/votetime", "wolfwarestudios:twbu/vote" ]);
@@ -172,9 +172,7 @@ function animate() {
 	dlib.background("background");
 	//dlib.background("collision");
 
-    dlib.ctx.filter = `hue-rotate(${Math.floor(col*360)}deg)`;
-	dlib.blit(`assets/player/${animd}_${parseInt(animi)}`, dlib.cx+128, dlib.cy+72-8);
-	dlib.ctx.filter = ``;
+	dlib.blitc(`assets/player/${animd}_${parseInt(animi)}`, dlib.cx+128, dlib.cy+72-8, col);
 
 	const playersToRemove = [];
 	nearplayer = null;
@@ -195,9 +193,9 @@ function animate() {
 			playersToRemove.push(puid);
 			continue;
 		}
-		dlib.ctx.filter = `hue-rotate(${Math.floor(players[puid].col*360)}deg)`;
-		dlib.blit(`assets/player/${player.dir}_0`, playersl[puid][0]+128, playersl[puid][1] + 72-8);
-		dlib.ctx.filter = ``;
+
+		dlib.blit(`assets/player/${player.dir}_0`, playersl[puid][0]+128, playersl[puid][1] + 72-8, players[puid].col);
+
 		const dst = Math.sqrt((player.x - cam.x) ** 2, (player.y - cam.y) ** 2);
 		if (dst < neardst) {
 		  nearplayer = puid;
