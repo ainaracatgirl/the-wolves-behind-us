@@ -35,10 +35,10 @@ class DrawLib {
 
     blitc(spr, x, y, col) {
       this.ctx.drawImage(this.sprites[spr], x - this.cx, y - this.cy);
-      ctx.globalCompositeOperation = "source-in";
+      this.ctx.globalCompositeOperation = "source-in";
       this.ctx.fillStyle = col;
       this.ctx.fillRect(0, 0, this.vw, this.vh);
-      ctx.globalCompositeOperation = "source-over";
+      this.ctx.globalCompositeOperation = "source-over";
     }
 
     clear() {
