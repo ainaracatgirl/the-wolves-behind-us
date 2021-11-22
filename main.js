@@ -33,7 +33,7 @@ function getuid() {
 	return parseInt(n).toString(16) + parseInt(k).toString(16);
 }
 
-let role = undefined;
+let role = "normal";
 let cankill = false;
 let endvotetime = 0;
 let votetime = 60;
@@ -91,6 +91,7 @@ setTimeout(() => {
 		role = 'wolf';
 	} else { role = 'normal'; }
 	roles[uid] = role;
+	document.getElementById('l').textContent = `Role: ${role}`;
 	conn.event('wolfwarestudios:twbu/role', { role });
 }, 1000);
 
