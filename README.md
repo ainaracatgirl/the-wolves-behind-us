@@ -1,5 +1,5 @@
-# school-project-game
-School Project - Game
+# The Wolves Behind Us
+Game I made for school.
 
 ## Compatibility
 All modern browsers.
@@ -8,7 +8,7 @@ All modern browsers.
 ## Build Instructions
 1. Clone this repository:
 ```
-git clone https://github.com/JanCraft/school-project-game.git
+git clone https://github.com/JanCraft/the-wolves-behind-us.git
 ```
 
 2. Run the web server:
