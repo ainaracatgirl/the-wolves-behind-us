@@ -42,5 +42,9 @@
     <script src="draw.lib.js?v=30"></script>
     <script src="broadcastws.min.js?v=30"></script>
     <script src="main.js?v=30"></script>
+    <script>
+      let show = !(localStorage.getItem("tutorial_shown"));
+      if (show) alert("Movimiento con las teclas de flechas, si ves un botón rojo, puedes MATAR con la 'K' y si ves un botón gris puedes VOTAR con la 'V'.");
+    </script>
 </body>
 </html>
