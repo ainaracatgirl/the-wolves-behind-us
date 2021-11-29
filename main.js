@@ -34,6 +34,7 @@ function getuid() {
 }
 
 let role = "normal";
+let dead = false;
 let cankill = false;
 let endvotetime = 0;
 let votetime = 60;
@@ -56,7 +57,7 @@ conn.addEventListener('message', (ev) => {
 	  console.log(packet.uid, packet.role);
 		roles[packet.uid] = packet.role;
 	} else if (packet.event == 'wolfwarestudios:twbu/getroles') {
-		if (role != undefined)
+		if (role != undefined && !dead)
 			conn.event('wolfwarestudios:twbu/role', { role, uid });
 	} else if (packet.event == 'wolfwarestudios:twbu/kill') {
 	  console.log(packet.dead, uid);
@@ -131,6 +132,7 @@ cam.x = start[0];
 cam.y = start[1];
 
 function sendpos() {
+  if (dead) return;
 	conn.event("wolfwarestudios:twbu/position", { uid, x: cam.x, y: cam.y, dir: animd, col });
 }
 
@@ -171,6 +173,10 @@ function animate() {
 	dlib.camera(cam.x, cam.y);
 	dlib.background("background");
 	//dlib.background("collision");
+	
+	if (dead) {
+	  dlib.ctx.filter = "grayscale(1)";
+	} else dlib.ctx.filter = "";
 
 	dlib.blitc(`assets/player/${animd}_${parseInt(animi)}`, dlib.cx+128, dlib.cy+72-8, col);
 
@@ -206,10 +212,10 @@ function animate() {
 		delete players[p];
 	}
 	
-	if (voting && role != "wolf") {
+	if (voting && role != "wolf" && !dead) {
 	  dlib.blit("vote", 256-16-8 + dlib.cx, 144-16-8 + dlib.cy);
 	}
-	if (cankill && role == "wolf") {
+	if (cankill && role == "wolf" && !dead) {
 	  dlib.blit("kill", 256-16-8 + dlib.cx, 144-16-8 + dlib.cy);
 	}
 	
@@ -258,12 +264,12 @@ window.addEventListener('keydown', (ev) => {
 		animp = true;
 		animd = 'front';
 	}
-	if (ev.key == 'v' 	&& voting && role != "wolf" && nearplayer != null && nearplayer != uid) {
+	if (ev.key == 'v' 	&& voting && role != "wolf" && nearplayer != null && nearplayer != uid && !dead) {
 	  voting = false;
 	  console.log("vote", nearplayer);
 	  conn.event("wolfwarestudios:twbu/vote", { uid: nearplayer });
 	}
-	if (ev.key == 'k' && cankill && role == "wolf" && nearplayer != null && nearplayer != uid) {
+	if (ev.key == 'k' && cankill && role == "wolf" && nearplayer != null && nearplayer != uid && !dead) {
 	  cankill = false;
 	  console.log("kill", nearplayer);
 	  conn.event("wolfwarestudios:twbu/kill", { dead: nearplayer });
