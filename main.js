@@ -35,6 +35,7 @@ function getuid() {
 
 let role = "normal";
 let dead = false;
+let deadtime = 0;
 let cankill = false;
 let endvotetime = 0;
 let votetime = 60;
@@ -62,8 +63,7 @@ conn.addEventListener('message', (ev) => {
 	} else if (packet.event == 'wolfwarestudios:twbu/kill') {
 	  console.log(packet.dead, uid);
 		if (packet.dead == uid && !voting) {
-			try { conn.close(); } catch(e) {}
-			location.href = "/the-wolves-behind-us/dead.html";
+		  dead = true;
 		}
 	} else if (packet.event == "wolfwarestudios:twbu/votetime") {
   	  console.log("vote time started (evt)");
@@ -165,6 +165,13 @@ setInterval(() => {
     voteproc = true;
     votesplay = {};
   }
+  
+  if (dead) {
+    deadtime += 1;
+    if (deadtime > 30) {
+      location.reload();
+    }
+  }
 }, 1000);
 setInterval(() => sendpos(), 2500);
 function animate() {
@@ -177,6 +184,7 @@ function animate() {
 	if (dead) {
 	  dlib.ctx.filter = "grayscale(1)";
 	} else dlib.ctx.filter = "";
+	
 
 	dlib.blitc(`assets/player/${animd}_${parseInt(animi)}`, dlib.cx+128, dlib.cy+72-8, col);
 
