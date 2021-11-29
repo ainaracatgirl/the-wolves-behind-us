@@ -88,7 +88,7 @@ conn.addEventListener('message', (ev) => {
   	    conn.event("wolfwarestudios:twbu/setrole", { uid: nearplayer, role: "roleswap" });
   	  }
 	  votetime = 60 + 10 + Math.random() * 5;
-	  endvotetime = 10;
+	  endvotetime = 30;
 	  voting = true;
 	  voteproc = true;
 	  votesplay = {};
@@ -185,7 +185,7 @@ setInterval(() => {
     conn.event("wolfwarestudios:twbu/votetime");
     console.log("vote time started");
     votetime = 60 + 10 + Math.random() * 5;
-    endvotetime = 10;
+    endvotetime = 30;
     voting = true;
     cankill = false;
     voteproc = true;
@@ -212,7 +212,7 @@ function animate() {
 	if (dead) {
 	  dlib.ctx.filter = "grayscale(1)";
 	} else {
-	  if (voteproc) dlib.ctx.filter = "";
+	  if (voteproc) dlib.ctx.filter = "none";
 	  else dlib.ctx.filter = "brightness(50%)";
 	}
 	
