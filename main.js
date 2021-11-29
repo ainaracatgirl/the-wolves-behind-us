@@ -80,6 +80,7 @@ conn.addEventListener('message', (ev) => {
 		  if (role == "jester") conn.event("wolfwarestudios:twbu/kill", { dead: packet.$sender });
 		  role = "dead";		  
 		  dead = true;
+		  deadtime = Math.random() * -5;
 		}
 	} else if (packet.event == "wolfwarestudios:twbu/votetime") {
   	  console.log("vote time started (evt)");
