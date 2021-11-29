@@ -63,6 +63,7 @@ conn.addEventListener('message', (ev) => {
 	} else if (packet.event == 'wolfwarestudios:twbu/kill') {
 	  console.log(packet.dead, uid);
 		if (packet.dead == uid && !voting) {
+		  role = "dead";
 		  dead = true;
 		}
 	} else if (packet.event == "wolfwarestudios:twbu/votetime") {
@@ -80,6 +81,8 @@ conn.addEventListener('message', (ev) => {
 });
 conn.addEventListener('close', (ev) => {
 	console.log(`Closed [${ev.code}] ${ev.reason}`);
+	location.reload();
+	role = "disconnected";
 });
 conn.addEventListener('open', (ev) => {
 	conn.event('wolfwarestudios:twbu/getroles', {});
@@ -244,7 +247,8 @@ animate();
 
 window.addEventListener('keydown', (ev) => {
 	if (statem != 'play') return;
-	if (animi > .1 && animi < 1.75) return;
+	if (ev.repeat) return;
+	if (animi > .1 && animi < 2.75) return;
 	const ox = cam.x;
 	const oy = cam.y;
 	
