@@ -35,6 +35,9 @@ function getuid() {
 
 const roletable = {
   normal: "Ciudadano",
+  jester: "Bufón",
+  roleswap: "Cambia-roles",
+  mayor: "Alcalde",
   wolf: "Lobo",
   dead: "Muerto",
   disconnected: "Conexión perdida"
@@ -56,7 +59,7 @@ let playersl = {};
 let col = '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
 let uid = getuid();
 
-const conn = BroadcastWS(uid, [ "wolfwarestudios:twbu/position", "wolfwarestudios:twbu/kill", "wolfwarestudios:twbu/getroles", "wolfwarestudios:twbu/role", "wolfwarestudios:twbu/votetime", "wolfwarestudios:twbu/vote" ]);
+const conn = BroadcastWS(uid, [ "wolfwarestudios:twbu/position", "wolfwarestudios:twbu/kill", "wolfwarestudios:twbu/getroles", "wolfwarestudios:twbu/role", "wolfwarestudios:twbu/votetime", "wolfwarestudios:twbu/vote", "wolfwarestudios:twbu/setrole" ]);
 conn.addEventListener('message', (ev) => {
 	const packet = JSON.parse(ev.data);
    if (packet.event == 'wolfwarestudios:twbu/position') {
@@ -69,15 +72,21 @@ conn.addEventListener('message', (ev) => {
 			conn.event('wolfwarestudios:twbu/role', { role, uid });
 	} else if (packet.event == 'wolfwarestudios:twbu/kill') {
 	  console.log(packet.dead, uid);
-	  delete players[packet.dead];
-	  delete playersl[packet.dead];
+	  // TODO: this be fixed
+	  // delete players[packet.dead];
+	  // delete playersl[packet.dead];
 	  
 		if (packet.dead == uid) {
-		  role = "dead";
+		  if (role == "jester") conn.event("wolfwarestudios:twbu/kill", { dead: packet.$sender });
+		  role = "dead";		  
 		  dead = true;
 		}
 	} else if (packet.event == "wolfwarestudios:twbu/votetime") {
   	  console.log("vote time started (evt)");
+  	  if (nearplayer != null && role == "roleswap") {
+  	    role = roles[nearplayer];
+  	    conn.event("wolfwarestudios:twbu/setrole", { uid: nearplayer, role: "roleswap" });
+  	  }
 	  votetime = 60 + 10 + Math.random() * 5;
 	  endvotetime = 10;
 	  voting = true;
@@ -87,6 +96,9 @@ conn.addEventListener('message', (ev) => {
 	} else if (packet.event == "wolfwarestudios:twbu/vote") {
 	  if (!(packet.uid in votesplay)) votesplay[packet.uid] = 0;
 	  votesplay[packet.uid]++;
+	} else if (packet.event == "wolfwarestudios:twbu/setrole") {
+	  roles[packet.uid] = packet.role;
+	  if (uid == packet.uid) role = packet.role;
 	}
 });
 conn.addEventListener('close', (ev) => {
@@ -107,7 +119,9 @@ setTimeout(() => {
 		role = 'wolf';
 	} else {
 	  role = 'normal';
-	  if (Math.random() < .1) role = 'wolf';
+	  if (Math.random() < .05) role = 'jester';
+	  if (Math.random() < .05) role = 'mayor';
+	  if (Math.random() < .05) role = 'roleswap';
 	}
 	roles[uid] = role;
 	conn.event('wolfwarestudios:twbu/role', { role, uid });
@@ -197,7 +211,10 @@ function animate() {
 	
 	if (dead) {
 	  dlib.ctx.filter = "grayscale(1)";
-	} else dlib.ctx.filter = "";
+	} else {
+	  if (voteproc) dlib.ctx.filter = "";
+	  else dlib.ctx.filter = "brightness(50%)";
+	}
 	
 
 	dlib.blitc(`assets/player/${animd}_${parseInt(animi)}`, dlib.cx+128, dlib.cy+72-8, col);
@@ -287,10 +304,11 @@ window.addEventListener('keydown', (ev) => {
 		animp = true;
 		animd = 'front';
 	}
-	if (ev.key == 'v' 	&& voting && role != "wolf" && nearplayer != null && nearplayer != uid && !dead) {
+	if (ev.key == 'v' && voting && role != "wolf" && nearplayer != null && nearplayer != uid && !dead) {
 	  voting = false;
 	  console.log("vote", nearplayer);
 	  conn.event("wolfwarestudios:twbu/vote", { uid: nearplayer });
+	  if (role == "mayor") conn.event("wolfwarestudios:twbu/vote", { uid: nearplayer });
 	}
 	if (ev.key == 'k' && cankill && role == "wolf" && nearplayer != null && nearplayer != uid && !dead) {
 	  cankill = false;
