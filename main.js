@@ -33,6 +33,13 @@ function getuid() {
 	return parseInt(n).toString(16) + parseInt(k).toString(16);
 }
 
+const roletable = {
+  normal: "Ciudadano",
+  wolf: "Lobo",
+  dead: "Muerto",
+  disconnected: "Conexión perdida"
+};
+
 let role = "normal";
 let dead = false;
 let deadtime = 0;
@@ -62,7 +69,10 @@ conn.addEventListener('message', (ev) => {
 			conn.event('wolfwarestudios:twbu/role', { role, uid });
 	} else if (packet.event == 'wolfwarestudios:twbu/kill') {
 	  console.log(packet.dead, uid);
-		if (packet.dead == uid && !voting) {
+	  delete players[packet.dead];
+	  delete playersl[packet.dead];
+	  
+		if (packet.dead == uid) {
 		  role = "dead";
 		  dead = true;
 		}
@@ -100,7 +110,6 @@ setTimeout(() => {
 	  if (Math.random() < .1) role = 'wolf';
 	}
 	roles[uid] = role;
-	document.getElementById('l').textContent = `Role: ${role}`;
 	conn.event('wolfwarestudios:twbu/role', { role, uid });
 }, 1000);
 
@@ -175,6 +184,8 @@ setInterval(() => {
       location.reload();
     }
   }
+  if (role != undefined)
+  	document.getElementById('l').textContent = `Rol: ${roletable[role]}`;
 }, 1000);
 setInterval(() => sendpos(), 2500);
 function animate() {
