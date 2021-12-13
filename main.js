@@ -27,10 +27,9 @@ collmap.then((e) => {
 	};
 });
 		
-function getuid() {
+function gethalfuid() {
 	const n = Date.now() / Math.random();
-	const k = Date.now() / Math.random();
-	return parseInt(n).toString(16) + parseInt(k).toString(16);
+	return parseInt(n).toString(16);
 }
 
 const roletable = {
@@ -43,7 +42,7 @@ const roletable = {
   disconnected: "Conexión perdida"
 };
 
-const name = localStorage.getItem('username') ?? prompt("Nombre de Usuario");
+const name = localStorage.getItem('username') ?? prompt("Nombre de Usuario") ?? gethalfuid();
 localStorage.setItem('username', name);
 
 let role = "normal";
