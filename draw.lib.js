@@ -48,7 +48,9 @@ class DrawLib {
     
     sqc(sz, x, y, col) {
       this.ctx.fillStyle = col;
-      this.ctx.fillRect(x - this.cx, y - this.cy, sz, sz);
+      this.ctx.beginPath();
+      this.ctx.arc(x - this.cx, y - this.cy, sz / 2, 0, 2 * Math.PI);
+      this.ctx.fill();
     }
 
     clear() {
