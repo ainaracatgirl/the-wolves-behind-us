@@ -217,6 +217,8 @@ function animate() {
 	dlib.background("background");
 	//dlib.background("collision");
 	
+	debugger;
+	
 	if (dead) {
 	  dlib.ctx.filter = "grayscale(1)";
 	} else {
