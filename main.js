@@ -43,7 +43,7 @@ const roletable = {
   disconnected: "Conexión perdida"
 };
 
-const name = localStorage.getItem('username') ?? prompt("Username");
+const name = localStorage.getItem('username') ?? prompt("Nombre de Usuario");
 localStorage.setItem('username', name);
 
 let role = "normal";
@@ -59,10 +59,9 @@ let votesplay = {};
 let roles = {};
 let players = {};
 let playersl = {};
-let col = '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
 let uid = name;
 
-const conn = BroadcastWS(uid, [ "wolfwarestudios:twbu/position", "wolfwarestudios:twbu/kill", "wolfwarestudios:twbu/getroles", "wolfwarestudios:twbu/role", "wolfwarestudios:twbu/votetime", "wolfwarestudios:twbu/vote", "wolfwarestudios:twbu/setrole" ]);
+const conn = BroadcastWS(uid, [ "wolfwarestudios:twbu/position", "wolfwarestudios:twbu/kill", "wolfwarestudios:twbu/getroles", "wolfwarestudios:twbu/role", "wolfwarestudios:twbu/votetime", "wolfwarestudios:twbu/vote", "wolfwarestudios:twbu/setrole", "wolfwarestudios:twbu/chat" ]);
 conn.addEventListener('message', (ev) => {
 	const packet = JSON.parse(ev.data);
    if (packet.event == 'wolfwarestudios:twbu/position') {
@@ -103,6 +102,9 @@ conn.addEventListener('message', (ev) => {
 	} else if (packet.event == "wolfwarestudios:twbu/setrole") {
 	  roles[packet.uid] = packet.role;
 	  if (uid == packet.uid) role = packet.role;
+	} else if (packet.event == "wolfwarestudios:twbu/chat") {
+	  const ch = document.querySelector('#chat');
+	  ch.innerHTML = packet.uid + ": " + packet.msg + ch.textContent + "<br>";
 	}
 });
 conn.addEventListener('close', (ev) => {
@@ -163,7 +165,7 @@ cam.y = start[1];
 
 function sendpos() {
   if (dead) return;
-	conn.event("wolfwarestudios:twbu/position", { uid, x: cam.x, y: cam.y, dir: animd, col });
+	conn.event("wolfwarestudios:twbu/position", { uid, x: cam.x, y: cam.y, dir: animd });
 }
 
 setInterval(() => {
@@ -221,7 +223,7 @@ function animate() {
 	}
 	
 
-	dlib.blitc(`assets/player/${animd}_${parseInt(animi)}`, dlib.cx+128, dlib.cy+72-8, col);
+	dlib.blit(`assets/player/${animd}_${parseInt(animi)}`, dlib.cx+128, dlib.cy+72-8);
 
 	const playersToRemove = [];
 	nearplayer = null;
@@ -243,7 +245,7 @@ function animate() {
 			continue;
 		}
 
-		dlib.blitc(`assets/player/${player.dir}_0`, playersl[puid][0]+128, playersl[puid][1] + 72-8, players[puid].col);
+		dlib.blit(`assets/player/${player.dir}_0`, playersl[puid][0]+128, playersl[puid][1] + 72-8);
 		dlib.text(puid, playersl[puid][0]+128, playersl[puid][1] + 72+8);
 
 		const dst = Math.sqrt((player.x - cam.x) ** 2, (player.y - cam.y) ** 2);
@@ -331,6 +333,13 @@ window.addEventListener('keydown', (ev) => {
 	if (collcheck(cam.x + 128, cam.y + 72 - 8)) {
 		cam.x = ox;
 		cam.y = oy;
+	}
+	
+	if (ev.key == "Enter") {
+	  const msg = prompt("Chat");
+	  if (msg && msg.trim() != "") {
+	    conn.event("wolfwarestudios:twbu/chat", { uid, msg });
+	  }
 	}
 });
 
