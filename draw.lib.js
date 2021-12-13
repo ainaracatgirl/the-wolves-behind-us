@@ -35,7 +35,7 @@ class DrawLib {
     
     text(str, x, y, c='black') {
       this.fillStyle = c;
-      this.ctx.fillString(str, x - this.cx, y - this.cy);
+      this.ctx.fillText(str, x - this.cx, y - this.cy);
     }
 
     blitc(spr, x, y, col) {
