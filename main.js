@@ -282,7 +282,6 @@ animate();
 
 window.addEventListener('keydown', (ev) => {
 	if (statem != 'play') return;
-	if (ev.repeat) return;
 	if (animi > .1 && animi < 2.75) return;
 	const ox = cam.x;
 	const oy = cam.y;
