@@ -32,6 +32,11 @@ class DrawLib {
     blit(spr, x, y) {
         this.ctx.drawImage(this.sprites[spr], x - this.cx, y - this.cy);
     }
+    
+    text(str, x, y, c='black') {
+      this.fillStyle = c;
+      this.ctx.fillString(str, x - this.cx, y - this.cy);
+    }
 
     blitc(spr, x, y, col) {
       this.ctx.drawImage(this.sprites[spr], x - this.cx, y - this.cy);

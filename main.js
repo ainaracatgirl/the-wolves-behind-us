@@ -43,6 +43,9 @@ const roletable = {
   disconnected: "Conexión perdida"
 };
 
+const name = localStorage.getItem('username') ?? prompt("Username");
+localStorage.setItem('username');
+
 let role = "normal";
 let dead = false;
 let deadtime = 0;
@@ -57,7 +60,7 @@ let roles = {};
 let players = {};
 let playersl = {};
 let col = '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
-let uid = getuid();
+let uid = name;
 
 const conn = BroadcastWS(uid, [ "wolfwarestudios:twbu/position", "wolfwarestudios:twbu/kill", "wolfwarestudios:twbu/getroles", "wolfwarestudios:twbu/role", "wolfwarestudios:twbu/votetime", "wolfwarestudios:twbu/vote", "wolfwarestudios:twbu/setrole" ]);
 conn.addEventListener('message', (ev) => {
@@ -241,6 +244,7 @@ function animate() {
 		}
 
 		dlib.blitc(`assets/player/${player.dir}_0`, playersl[puid][0]+128, playersl[puid][1] + 72-8, players[puid].col);
+		dlib.text(puid, playersl[puid][0]+128, playersl[puid][1] + 72+8);
 
 		const dst = Math.sqrt((player.x - cam.x) ** 2, (player.y - cam.y) ** 2);
 		if (dst < neardst) {
