@@ -336,9 +336,10 @@ window.addEventListener('keydown', (ev) => {
 		cam.y = oy;
 	}
 	
-	if (ev.key == "Enter") {
-	  const msg = prompt("Chat");
+	if (ev.key == "Enter" && !dead) {
+	  let msg = prompt("Chat");
 	  if (msg && msg.trim() != "") {
+	    msg = msg.slice(0, 64);
 	    conn.event("wolfwarestudios:twbu/chat", { uid, msg });
 	    ch.innerHTML = uid + ": " + msg + "<br>" + ch.innerHTML;
 	  }
