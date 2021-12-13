@@ -229,7 +229,7 @@ function animate() {
 	const playersToRemove = [];
 	if (nearplayer) dlib.sqc(16, playersl[nearplayer][0]+128, playersl[nearplayer][1] + 72-8, 'skyblue');
 	nearplayer = null;
-	let neardst = 5 * 8;
+	let neardst = 5 * 16;
 	for (const puid of Object.keys(players)) {	  
 		const player = players[puid];
 		if (!(puid in playersl)) playersl[puid] = [0,0];
