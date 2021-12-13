@@ -59,6 +59,7 @@ let roles = {};
 let players = {};
 let playersl = {};
 let uid = name;
+let skin = "player";
 
 const ch = document.querySelector('#chat');
 
@@ -66,7 +67,7 @@ const conn = BroadcastWS(uid, [ "wolfwarestudios:twbu/position", "wolfwarestudio
 conn.addEventListener('message', (ev) => {
 	const packet = JSON.parse(ev.data);
    if (packet.event == 'wolfwarestudios:twbu/position') {
-		players[packet.uid] = { x: packet.x, y: packet.y, dir: packet.dir, time: Date.now(), col: packet.col };
+		players[packet.uid] = { x: packet.x, y: packet.y, dir: packet.dir, time: Date.now(), col: packet.col, skin: packet.skin };
 	} else if (packet.event == 'wolfwarestudios:twbu/role') {
 	  console.log(packet.uid, packet.role);
 		roles[packet.uid] = packet.role;
@@ -79,14 +80,18 @@ conn.addEventListener('message', (ev) => {
 	  // delete players[packet.dead];
 	  // delete playersl[packet.dead];
 	  
+	  ch.innerHTML = `["${packet.dead}" ha muerto]<br>` + ch.innerHTML;
+	  
 		if (packet.dead == uid) {
 		  if (role == "jester") conn.event("wolfwarestudios:twbu/kill", { dead: packet.$sender });
+		  ch.innerHTML = `[Te ha matado "${packet.$sender}"]<br>` + ch.innerHTML;
 		  role = "dead";		  
 		  dead = true;
 		  deadtime = Math.random() * -5;
 		}
 	} else if (packet.event == "wolfwarestudios:twbu/votetime") {
   	  console.log("vote time started (evt)");
+  	  ch.innerHTML = "[Hora de votar]<br>" + ch.innerHTML;
   	  if (nearplayer != null && role == "roleswap") {
   	    role = roles[nearplayer];
   	    conn.event("wolfwarestudios:twbu/setrole", { uid: nearplayer, role: "roleswap" });
@@ -100,11 +105,13 @@ conn.addEventListener('message', (ev) => {
 	} else if (packet.event == "wolfwarestudios:twbu/vote") {
 	  if (!(packet.uid in votesplay)) votesplay[packet.uid] = 0;
 	  votesplay[packet.uid]++;
+	  ch.innerHTML = `["${packet.uid}" ha sido votado]<br>` + ch.innerHTML;
 	} else if (packet.event == "wolfwarestudios:twbu/setrole") {
 	  roles[packet.uid] = packet.role;
 	  if (uid == packet.uid) role = packet.role;
 	} else if (packet.event == "wolfwarestudios:twbu/chat") {
-	  ch.innerHTML = packet.uid + ": " + packet.msg + "<br>" + ch.innerHTML;
+	  if (packet.dead == dead)
+	    ch.innerHTML = packet.uid + ": " + packet.msg + "<br>" + ch.innerHTML;
 	}
 });
 conn.addEventListener('close', (ev) => {
@@ -137,15 +144,12 @@ const anims = [
 	'assets/player/front_0.png',
 	'assets/player/front_1.png',
 	'assets/player/front_2.png',
-
 	'assets/player/right_0.png',
 	'assets/player/right_1.png',
 	'assets/player/right_2.png',
-
 	'assets/player/left_0.png',
 	'assets/player/left_1.png',
 	'assets/player/left_2.png',
-
 	'assets/player/back_0.png',
 	'assets/player/back_1.png',
 	'assets/player/back_2.png'
@@ -154,7 +158,6 @@ const anims = [
 let animi = 0;
 let animp = false;
 let animd = 'left';
-
 let statem = 'play';
 
 const cam = { x: 0, y: 0, _: false };
@@ -172,7 +175,7 @@ setInterval(() => {
   votetime--;
   endvotetime--;
   if (endvotetime <= 0 && voteproc) {
-    console.log("vote time ended");
+    ch.innerHTML = "[Hora de matar]<br>" + ch.innerHTML;
     voteproc = false;
     voting = false;
     cankill = true;
@@ -189,7 +192,7 @@ setInterval(() => {
   }
   if (votetime <= 0) {
     conn.event("wolfwarestudios:twbu/votetime");
-    console.log("vote time started");
+    ch.innerHTML = "[Hora de votar]<br>" + ch.innerHTML;
     votetime = 60 + 10 + Math.random() * 5;
     endvotetime = 30;
     voting = true;
@@ -222,10 +225,10 @@ function animate() {
 	  else dlib.ctx.filter = "brightness(50%)";
 	}
 	
-
-	dlib.blit(`assets/player/${animd}_${parseInt(animi)}`, dlib.cx+128, dlib.cy+72-8);
+	dlib.blit(`assets/${skin}/${animd}_${parseInt(animi)}`, dlib.cx+128, dlib.cy+72-8);
 
 	const playersToRemove = [];
+	if (nearplayer) dlib.sqc(16, playersl[puid][0]+128, playersl[puid][1] + 72-8, 'blue');
 	nearplayer = null;
 	let neardst = 5 * 8;
 	for (const puid of Object.keys(players)) {	  
@@ -245,8 +248,8 @@ function animate() {
 			continue;
 		}
 
-		dlib.blit(`assets/player/${player.dir}_0`, playersl[puid][0]+128, playersl[puid][1] + 72-8);
-		dlib.text(puid, playersl[puid][0]+128, playersl[puid][1] + 72+8);
+		dlib.blit(`assets/${player.skin}/${player.dir}_0`, playersl[puid][0]+128, playersl[puid][1] + 72-8);
+		dlib.text(puid, playersl[puid][0]+112, playersl[puid][1] + 72+16);
 
 		const dst = Math.sqrt((player.x - cam.x) ** 2, (player.y - cam.y) ** 2);
 		if (dst < neardst) {
@@ -254,6 +257,7 @@ function animate() {
 		  neardst = dst;
 		}
 	}
+	
 	for (const p of playersToRemove) {
 		delete players[p];
 	}
@@ -338,15 +342,8 @@ window.addEventListener('keydown', (ev) => {
 	  let msg = prompt("Chat");
 	  if (msg && msg.trim() != "") {
 	    msg = msg.slice(0, 64);
-	    conn.event("wolfwarestudios:twbu/chat", { uid, msg });
+	    conn.event("wolfwarestudios:twbu/chat", { uid, msg, dead });
 	    ch.innerHTML = uid + ": " + msg + "<br>" + ch.innerHTML;
 	  }
 	}
 });
-
-function killall() {
-  for (const puid of Object.keys(players)) {
-    if (puid == uid) continue;
-    conn.event("wolfwarestudios:twbu/kill", { dead: tokill     });
-  }
-}

@@ -45,6 +45,11 @@ class DrawLib {
       this.ctx.fillRect(x - this.cx, y - this.cy, this.sprites[spr].width, this.sprites[spr].height);
       this.ctx.globalCompositeOperation = "source-over";
     }
+    
+    sqc(sz, x, y, col) {
+      this.ctx.fillStyle = col;
+      this.ctx.fillRect(x - this.cx, y - this.cy, sz, sz);
+    }
 
     clear() {
         const deltaTime = (Date.now() - this.lt) / 100;
