@@ -61,6 +61,8 @@ let players = {};
 let playersl = {};
 let uid = name;
 
+const ch = document.querySelector('#chat');
+
 const conn = BroadcastWS(uid, [ "wolfwarestudios:twbu/position", "wolfwarestudios:twbu/kill", "wolfwarestudios:twbu/getroles", "wolfwarestudios:twbu/role", "wolfwarestudios:twbu/votetime", "wolfwarestudios:twbu/vote", "wolfwarestudios:twbu/setrole", "wolfwarestudios:twbu/chat" ]);
 conn.addEventListener('message', (ev) => {
 	const packet = JSON.parse(ev.data);
@@ -103,8 +105,7 @@ conn.addEventListener('message', (ev) => {
 	  roles[packet.uid] = packet.role;
 	  if (uid == packet.uid) role = packet.role;
 	} else if (packet.event == "wolfwarestudios:twbu/chat") {
-	  const ch = document.querySelector('#chat');
-	  ch.innerHTML = packet.uid + ": " + packet.msg + ch.innerHTML + "<br>";
+	  ch.innerHTML = packet.uid + ": " + packet.msg + "<br>" + ch.innerHTML;
 	}
 });
 conn.addEventListener('close', (ev) => {
@@ -339,7 +340,7 @@ window.addEventListener('keydown', (ev) => {
 	  const msg = prompt("Chat");
 	  if (msg && msg.trim() != "") {
 	    conn.event("wolfwarestudios:twbu/chat", { uid, msg });
-	    ch.innerHTML = uid + ": " + msg + ch.innerHTML + "<br>";
+	    ch.innerHTML = uid + ": " + msg + "<br>" + ch.innerHTML;
 	  }
 	}
 });
