@@ -1,3 +1,5 @@
+console.log("%c TE VEO LAS INTENCIONES, NO HAGAS TRAMPAS", "font-size: 5rem; font-weight: bold; color: red;");
+
 const dlib = new DrawLib("#canvas");
 dlib.loadSprite("kill", "assets/spr_kill.png");
 dlib.loadSprite("vote", "assets/spr_vote.png");
