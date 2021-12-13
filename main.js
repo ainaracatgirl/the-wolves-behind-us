@@ -59,15 +59,14 @@ let roles = {};
 let players = {};
 let playersl = {};
 let uid = name;
-let skin = "player";
+let skin = localStorage.getItem('skin') ?? "player";
 
 const ch = document.querySelector('#chat');
-
 const conn = BroadcastWS(uid, [ "wolfwarestudios:twbu/position", "wolfwarestudios:twbu/kill", "wolfwarestudios:twbu/getroles", "wolfwarestudios:twbu/role", "wolfwarestudios:twbu/votetime", "wolfwarestudios:twbu/vote", "wolfwarestudios:twbu/setrole", "wolfwarestudios:twbu/chat" ]);
 conn.addEventListener('message', (ev) => {
 	const packet = JSON.parse(ev.data);
    if (packet.event == 'wolfwarestudios:twbu/position') {
-		players[packet.uid] = { x: packet.x, y: packet.y, dir: packet.dir, time: Date.now(), col: packet.col, skin: packet.skin };
+		players[packet.uid] = { x: packet.x, y: packet.y, dir: packet.dir, time: Date.now(), skin: packet.skin };
 	} else if (packet.event == 'wolfwarestudios:twbu/role') {
 	  console.log(packet.uid, packet.role);
 		roles[packet.uid] = packet.role;
@@ -168,7 +167,7 @@ cam.y = start[1];
 
 function sendpos() {
   if (dead) return;
-	conn.event("wolfwarestudios:twbu/position", { uid, x: cam.x, y: cam.y, dir: animd });
+	conn.event("wolfwarestudios:twbu/position", { uid, x: cam.x, y: cam.y, dir: animd, skin });
 }
 
 setInterval(() => {
