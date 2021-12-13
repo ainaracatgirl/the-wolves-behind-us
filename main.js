@@ -44,7 +44,7 @@ const roletable = {
 };
 
 const name = localStorage.getItem('username') ?? prompt("Username");
-localStorage.setItem('username');
+localStorage.setItem('username', name);
 
 let role = "normal";
 let dead = false;
