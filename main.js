@@ -104,7 +104,7 @@ conn.addEventListener('message', (ev) => {
 	  if (uid == packet.uid) role = packet.role;
 	} else if (packet.event == "wolfwarestudios:twbu/chat") {
 	  const ch = document.querySelector('#chat');
-	  ch.innerHTML = packet.uid + ": " + packet.msg + ch.textContent + "<br>";
+	  ch.innerHTML = packet.uid + ": " + packet.msg + ch.innerHTML + "<br>";
 	}
 });
 conn.addEventListener('close', (ev) => {
@@ -339,6 +339,7 @@ window.addEventListener('keydown', (ev) => {
 	  const msg = prompt("Chat");
 	  if (msg && msg.trim() != "") {
 	    conn.event("wolfwarestudios:twbu/chat", { uid, msg });
+	    ch.innerHTML = uid + ": " + msg + ch.innerHTML + "<br>";
 	  }
 	}
 });
