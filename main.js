@@ -227,7 +227,7 @@ function animate() {
 	dlib.blit(`assets/${skin}/${animd}_${parseInt(animi)}`, dlib.cx+128, dlib.cy+72-8);
 
 	const playersToRemove = [];
-	if (nearplayer) dlib.sqc(16, playersl[puid][0]+128, playersl[puid][1] + 72-8, 'blue');
+	if (nearplayer) dlib.sqc(16, playersl[nearplayer][0]+128, playersl[nearplayer][1] + 72-8, 'blue');
 	nearplayer = null;
 	let neardst = 5 * 8;
 	for (const puid of Object.keys(players)) {	  
