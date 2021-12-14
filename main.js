@@ -154,7 +154,33 @@ const anims = [
 	'assets/player/left_2.png',
 	'assets/player/back_0.png',
 	'assets/player/back_1.png',
-	'assets/player/back_2.png'
+	'assets/player/back_2.png',
+	
+	'assets/sk_jdev/front_0.png',
+	'assets/sk_jdev/front_1.png',
+	'assets/sk_jdev/front_2.png',
+	'assets/sk_jdev/right_0.png',
+	'assets/sk_jdev/right_1.png',
+	'assets/pk_jdev/right_2.png',
+	'assets/sk_jdev/left_0.png',
+	'assets/sk_jdev/left_1.png',
+	'assets/sk_jdev/left_2.png',
+	'assets/sk_jdev/back_0.png',
+	'assets/sk_jdev/back_1.png',
+	'assets/sk_jdev/back_2.png',
+	
+	'assets/sk_Ianda/front_0.png',
+	'assets/sk_Ianda/front_1.png',
+	'assets/sk_Ianda/front_2.png',
+	'assets/sk_Ianda/right_0.png',
+	'assets/sk_Ianda/right_1.png',
+	'assets/sk_Ianda/right_2.png',
+	'assets/sk_Ianda/left_0.png',
+	'assets/sk_Ianda/left_1.png',
+	'assets/sk_Ianda/left_2.png',
+	'assets/sk_Ianda/back_0.png',
+	'assets/sk_Ianda/back_1.png',
+	'assets/sk_Ianda/back_2.png'
 ].map(x => {dlib.loadSprite(x.replace('.png', ''), x);return x.replace('.png', '')});
 
 let animi = 0;
