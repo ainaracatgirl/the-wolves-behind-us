@@ -318,25 +318,25 @@ window.addEventListener('keydown', (ev) => {
 	const ox = cam.x;
 	const oy = cam.y;
 	
-	if (ev.key == 'ArrowLeft') {
+	if (ev.key == 'ArrowLeft' || ev.key == 'A') {
 		cam.x -= 16;
 		cam._ = true;
 		animp = true;
 		animd = 'left';
 	}
-	if (ev.key == 'ArrowRight') {
+	if (ev.key == 'ArrowRight' || ev.key == 'D') {
 		cam.x += 16;
 		cam._ = true;
 		animp = true;
 		animd = 'right';
 	}
-	if (ev.key == 'ArrowUp') {
+	if (ev.key == 'ArrowUp' || ev.key == 'W') {
 		cam.y -= 16;
 		cam._ = true;
 		animp = true;
 		animd = 'back';
 	}
-	if (ev.key == 'ArrowDown') {
+	if (ev.key == 'ArrowDown' || ev.key == 'S') {
 		cam.y += 16;
 		cam._ = true;
 		animp = true;
@@ -346,6 +346,7 @@ window.addEventListener('keydown', (ev) => {
 	  voting = false;
 	  console.log("vote", nearplayer);
 	  conn.event("wolfwarestudios:twbu/vote", { uid: nearplayer });
+	  ch.innerHTML = "[Has votado a '" + nearplayer + "']<br>" + ch.innerHTML;
 	  if (role == "mayor") conn.event("wolfwarestudios:twbu/vote", { uid: nearplayer });
 	}
 	if (ev.key == 'k' && cankill && role == "wolf" && nearplayer != null && nearplayer != uid && !dead) {
