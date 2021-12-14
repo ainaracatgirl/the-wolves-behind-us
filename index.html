@@ -20,6 +20,10 @@
           
           overflow: hidden;
         }
+        
+        main {
+          display: flex;
+        }
 
         canvas {
           background: #000;
@@ -32,17 +36,23 @@
           max-width: 1024px;
           max-height: 576px;
         }
+        
+        p {
+          width: 30%;
+        }
     </style>
 </head>
 <body>
-    <canvas id="canvas" width="256" height="144"></canvas>
-    <small>v61</small>
+    <main>
+      <canvas id="canvas" width="256" height="144"></canvas>
+      <p id="chat"></p>
+    </main>
+    <small>v62</small>
     <small id="l">Cargando...</small>
-    <p id="chat"></p>
 
-    <script src="draw.lib.js?v=61"></script>
-    <script src="broadcastws.min.js?v=61"></script>
-    <script src="main.js?v=61"></script>
+    <script src="draw.lib.js?v=62"></script>
+    <script src="broadcastws.min.js?v=62"></script>
+    <script src="main.js?v=62"></script>
     <script>
       let show = !(localStorage.getItem("tutorial_shown"));
       if (show) {

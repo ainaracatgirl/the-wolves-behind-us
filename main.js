@@ -318,25 +318,25 @@ window.addEventListener('keydown', (ev) => {
 	const ox = cam.x;
 	const oy = cam.y;
 	
-	if (ev.key == 'ArrowLeft' || ev.key == 'A') {
+	if (ev.key == 'ArrowLeft' || ev.key == 'a') {
 		cam.x -= 16;
 		cam._ = true;
 		animp = true;
 		animd = 'left';
 	}
-	if (ev.key == 'ArrowRight' || ev.key == 'D') {
+	if (ev.key == 'ArrowRight' || ev.key == 'd') {
 		cam.x += 16;
 		cam._ = true;
 		animp = true;
 		animd = 'right';
 	}
-	if (ev.key == 'ArrowUp' || ev.key == 'W') {
+	if (ev.key == 'ArrowUp' || ev.key == 'w') {
 		cam.y -= 16;
 		cam._ = true;
 		animp = true;
 		animd = 'back';
 	}
-	if (ev.key == 'ArrowDown' || ev.key == 'S') {
+	if (ev.key == 'ArrowDown' || ev.key == 's') {
 		cam.y += 16;
 		cam._ = true;
 		animp = true;
