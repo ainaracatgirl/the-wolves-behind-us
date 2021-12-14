@@ -161,7 +161,7 @@ const anims = [
 	'assets/sk_jdev/front_2.png',
 	'assets/sk_jdev/right_0.png',
 	'assets/sk_jdev/right_1.png',
-	'assets/pk_jdev/right_2.png',
+	'assets/sk_jdev/right_2.png',
 	'assets/sk_jdev/left_0.png',
 	'assets/sk_jdev/left_1.png',
 	'assets/sk_jdev/left_2.png',
