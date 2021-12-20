@@ -137,9 +137,6 @@ setTimeout(() => {
 	}
 	roles[uid] = role;
 	conn.event('wolfwarestudios:twbu/role', { role, uid });
-	
-	console.clear();
-	console.log("%c TE VEO LAS INTENCIONES, NO HAGAS TRAMPAS", "font-size: 2rem; font-weight: bold; color: red;");
 }, 1000);
 
 const anims = [
@@ -237,6 +234,11 @@ setInterval(() => {
   }
   if (role != undefined)
   	document.getElementById('l').textContent = `Rol: ${roletable[role]}`;
+  
+  if (!localStorage.getItem("dev")) {
+    console.clear();
+    console.log("%c TE VEO LAS INTENCIONES, NO HAGAS TRAMPAS", "font-size: 2rem; font-weight: bold; color: red;"); 
+  }
 }, 1000);
 setInterval(() => sendpos(), 2500);
 function animate() {
