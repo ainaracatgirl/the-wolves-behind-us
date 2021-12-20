@@ -47,20 +47,28 @@
       <canvas id="canvas" width="256" height="144"></canvas>
       <p id="chat"></p>
     </main>
-    <small>v63</small>
+    <small>v64</small>
     <small id="l">Cargando...</small>
     
     <audio src="assets/bgm.ogg" autoplay loop></audio>
 
-    <script src="draw.lib.js?v=63"></script>
-    <script src="broadcastws.min.js?v=63"></script>
-    <script src="main.js?v=63"></script>
+    <script src="draw.lib.js?v=64"></script>
+    <script src="broadcastws.min.js?v=64"></script>
+    <script src="main.js?v=64"></script>
     <script>
       let show = !(localStorage.getItem("tutorial_shown"));
       if (show) {
         alert("Movimiento con las teclas de flechas, si ves un botón rojo, puedes MATAR con la 'K' y si ves un botón gris puedes VOTAR con la 'V'.");
         localStorage.setItem("tutorial_shown", 1);
       }
+
+      let played = false;
+      window.addEventListener('readystatechange', () => {
+        if (!played) {
+          document.querySelector('audio').play();
+          played = true;
+        }
+      });
     </script>
 </body>
 </html>
