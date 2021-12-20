@@ -45,16 +45,18 @@
 <body>
     <main>
       <canvas id="canvas" width="256" height="144"></canvas>
-      <p id="chat"></p>
+      <p id="chat">
+        <button onclick="music(this)">Activar música</button>
+      </p>
     </main>
-    <small>v64</small>
+    <small>v66</small>
     <small id="l">Cargando...</small>
     
     <audio src="assets/bgm.ogg" autoplay loop></audio>
 
-    <script src="draw.lib.js?v=64"></script>
-    <script src="broadcastws.min.js?v=64"></script>
-    <script src="main.js?v=64"></script>
+    <script src="draw.lib.js?v=66"></script>
+    <script src="broadcastws.min.js?v=66"></script>
+    <script src="main.js?v=66"></script>
     <script>
       let show = !(localStorage.getItem("tutorial_shown"));
       if (show) {
@@ -62,13 +64,10 @@
         localStorage.setItem("tutorial_shown", 1);
       }
 
-      let played = false;
-      window.addEventListener('readystatechange', () => {
-        if (!played) {
-          document.querySelector('audio').play();
-          played = true;
-        }
-      });
+      function music(a) {
+        document.querySelector('audio').play();
+        a.remove();
+      }
     </script>
 </body>
 </html>
